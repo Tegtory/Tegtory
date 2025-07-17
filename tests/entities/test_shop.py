@@ -1,4 +1,4 @@
-from domain.entities import Shop
+from tegtory.domain.entities import Shop
 
 
 def test_delivery_required() -> None:

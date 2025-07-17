@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package grpc;
+
+message Empty {}
+message Nothing {}
+
+message User {
+  string id = 1;
+  bool is_admin = 2;
+  bool is_banned = 3;
+  optional string name = 4;
+}
+
+message AuthUser {
+  int64 telegram_id = 1;
+  string username = 2;
+  optional string name = 3;
+}
+
+message LoginUser {
+  int64 telegram_id = 1;
+}
+
+message ChangeName {
+  string id = 1;
+  string name = 2;
+}
+
+service AuthService {
+  rpc register_telegram(AuthUser) returns (Empty);
+  rpc login_telegram(LoginUser) returns (User);
+}
+
+service ProfileService {
+  rpc update_profile(ChangeName) returns (Empty);
+}

@@ -1,6 +1,6 @@
 import pytest
 
-from domain.entities import Product, Storage
+from tegtory.domain.entities import Product, Storage
 
 
 @pytest.mark.asyncio

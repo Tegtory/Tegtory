@@ -2,9 +2,9 @@ from typing import Any
 
 import pytest
 
-from common.exceptions import AppError
-from domain.results import Failure
-from domain.use_cases.queries.base import BaseQueryHandler
+from tegtory.common.exceptions import AppError
+from tegtory.domain.results import Failure
+from tegtory.domain.use_cases.queries.base import BaseQueryHandler
 
 
 def raise_app_exception(self: type, cmd: Any) -> None:

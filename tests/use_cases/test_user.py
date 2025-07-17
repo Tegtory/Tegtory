@@ -3,14 +3,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from domain.commands.user import RegisterUserCommand, StartUserWorkCommand
-from domain.entities import Factory, Product, User
-from domain.results import Failure, Success
-from domain.use_cases.commands.user import (
+from tegtory.domain.commands import RegisterUserCommand, StartUserWorkCommand
+from tegtory.domain.entities import Factory, Product, User
+from tegtory.domain.results import Failure, Success
+from tegtory.domain.use_cases.commands.user import (
     RegisterUserCommandHandler,
     StartUserWorkCommandHandler,
 )
-from domain.use_cases.event.user import UserEvent
+from tegtory.domain.use_cases.event.user import UserEvent
 
 
 @pytest.mark.asyncio

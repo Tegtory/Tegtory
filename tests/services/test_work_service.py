@@ -1,6 +1,6 @@
 import pytest
 
-from domain.services import work
+from tegtory.domain.services import work
 
 
 @pytest.mark.asyncio

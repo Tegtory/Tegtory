@@ -2,12 +2,14 @@ from unittest.mock import AsyncMock, Mock
 
 import pytest
 
-from domain.commands import UpgradeStorageCommand
-from domain.entities import Storage
-from domain.queries import GetStorageQuery
-from domain.results import Success
-from domain.use_cases.commands.storage import UpgradeStorageCommandHandler
-from domain.use_cases.queries.factory import GetStorageQueryHandler
+from tegtory.domain.commands import UpgradeStorageCommand
+from tegtory.domain.entities import Storage
+from tegtory.domain.queries import GetStorageQuery
+from tegtory.domain.results import Success
+from tegtory.domain.use_cases.commands.storage import (
+    UpgradeStorageCommandHandler,
+)
+from tegtory.domain.use_cases.queries.factory import GetStorageQueryHandler
 
 
 @pytest.mark.asyncio

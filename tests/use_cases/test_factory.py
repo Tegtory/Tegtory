@@ -2,27 +2,31 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from domain.commands import PayTaxCommand
-from domain.commands.factory import (
+from tegtory.domain.commands import PayTaxCommand
+from tegtory.domain.commands.factory import (
     CreateFactoryCommand,
     HireWorkerCommand,
     StartFactoryCommand,
     UpgradeFactoryCommand,
 )
-from domain.entities import Factory, Product, Storage
-from domain.entities.factory import StartFactoryEvent
-from domain.events import EventType
-from domain.interfaces import FactoryRepository
-from domain.queries.factory import GetFactoryQuery
-from domain.results import Failure, Success
-from domain.use_cases.commands.factory import (
+from tegtory.domain.entities import (
+    Factory,
+    Product,
+    StartFactoryEvent,
+    Storage,
+)
+from tegtory.domain.events import EventType
+from tegtory.domain.interfaces import FactoryRepository
+from tegtory.domain.queries.factory import GetFactoryQuery
+from tegtory.domain.results import Failure, Success
+from tegtory.domain.use_cases.commands.factory import (
     CreateFactoryCommandHandler,
     HireWorkerCommandHandler,
     PayTaxCommandHandler,
     StartFactoryCommandHandler,
     UpgradeFactoryCommandHandler,
 )
-from domain.use_cases.queries.factory import GetFactoryQueryHandler
+from tegtory.domain.use_cases.queries.factory import GetFactoryQueryHandler
 
 
 @pytest.fixture

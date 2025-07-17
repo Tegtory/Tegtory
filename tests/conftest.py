@@ -2,8 +2,8 @@ from unittest.mock import AsyncMock, MagicMock, Mock
 
 import pytest
 
-from domain.entities import Factory
-from domain.use_cases import UCFactory
+from tegtory.domain.entities import Factory
+from tegtory.domain.use_cases import UCFactory
 
 
 @pytest.fixture

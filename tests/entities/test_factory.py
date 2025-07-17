@@ -2,8 +2,8 @@ import time
 
 import pytest
 
-from common.exceptions import DuringWorkError
-from domain.entities import Factory
+from tegtory.common.exceptions import DuringWorkError
+from tegtory.domain.entities import Factory
 
 
 def test_factory_minutes_to_work() -> None:

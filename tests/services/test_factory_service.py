@@ -3,8 +3,8 @@ from unittest.mock import Mock
 
 import pytest
 
-from common.exceptions import AppError, TaxError
-from domain.services.factory import FactoryService
+from tegtory.common.exceptions import AppError, TaxError
+from tegtory.domain.services.factory import FactoryService
 
 
 @pytest.mark.asyncio

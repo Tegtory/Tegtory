@@ -1,5 +1,5 @@
 [project]
-name = "Tegtory"
+name = "tegtory"
 
 [tool.mypy]
 python_version = 3.12
@@ -16,7 +16,7 @@ show_error_codes = true
 warn_unreachable = true
 
 [[tool.mypy.overrides]]
-module = 'presenters.aiogram.*'
+module = 'tegtory.presenters.aiogram.*'
 disable_error_code="union-attr"
 
 [tool.pytest.ini_options]
@@ -111,7 +111,7 @@ docstring-code-line-length = "dynamic"
 branch = true
 omit = [
     "tests/*",
-    "domain/interfaces/*",
+    "tegtory/domain/interfaces/*",
 ]
 
 
@@ -119,5 +119,4 @@ omit = [
 exclude_also = [
     "raise AssertionError",
     "raise NotImplementedError",
-
 ]

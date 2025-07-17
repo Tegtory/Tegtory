@@ -3,9 +3,8 @@ from typing import Any
 
 import pytest
 
-from domain.events import EventType
-from domain.events.subscribe import on_event
-from domain.use_cases.base import EventBased
+from tegtory.domain.events import EventType, on_event
+from tegtory.domain.use_cases.base import EventBased
 
 
 @dataclasses.dataclass(frozen=True)

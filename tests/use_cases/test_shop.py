@@ -2,14 +2,14 @@ from unittest.mock import Mock
 
 import pytest
 
-from domain.queries.shop import (
+from tegtory.domain.queries import (
     ListShopDeliveryQuery,
     ListShopNoDeliveryQuery,
     ListShopQuery,
     ShopQuery,
 )
-from domain.results import Success
-from domain.use_cases.queries.shop import (
+from tegtory.domain.results import Success
+from tegtory.domain.use_cases.queries.shop import (
     ListShopDeliveryQueryHandler,
     ListShopNoDeliveryQueryHandler,
     ListShopQueryHandler,

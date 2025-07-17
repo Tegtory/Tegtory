@@ -52,9 +52,10 @@ Project architecture was built with clean code in mind. So here you can find som
 
 ```python
 # domain/commands/shop.py
-from domain.commands.base import BaseCommand
+from tegtory.domain.commands.base import BaseCommand
 
-class CreateShopCommand(BaseCommand): # 1
+
+class CreateShopCommand(BaseCommand):  # 1
     title: str
 ```
 
@@ -74,9 +75,7 @@ class Unit:
     mana: int = 100
 ```
 
-1. With entities, we work only with kw_only=True
-
-**_WARN: for now using pydantic or dataclasses is under discussion, then final decision come up entities, commands, queries will be updated_**
+1. entities are built with dataclasses with kw_only
 
 ### `domain/interfaces` - repository protocols
 

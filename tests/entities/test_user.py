@@ -1,6 +1,6 @@
 import time
 
-from domain.entities import User
+from tegtory.domain.entities import User
 
 
 def test_user_minutes_to_work() -> None:

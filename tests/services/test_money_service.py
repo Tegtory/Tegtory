@@ -2,9 +2,9 @@ from unittest.mock import Mock
 
 import pytest
 
-from common.exceptions import AppError
-from domain.events import EventType
-from domain.services.money import MoneyService
+from tegtory.common.exceptions import AppError
+from tegtory.domain.events import EventType
+from tegtory.domain.services.money import MoneyService
 
 
 @pytest.mark.asyncio
