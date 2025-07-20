@@ -8,7 +8,7 @@ from tegtory.infrastructure import CommandExecutor
 from tegtory.presenters.aiogram.kb import factory as kb
 from tegtory.presenters.aiogram.kb.callbacks import FactoryCB
 from tegtory.presenters.aiogram.messages import factory as msg
-from tegtory.presenters.shared.utils import (
+from tegtory.presenters.aiogram.utils import (
     get_factory,
     get_storage_from_factory,
 )

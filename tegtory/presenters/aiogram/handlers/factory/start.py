@@ -8,9 +8,10 @@ from tegtory.domain.commands import StartUserWorkCommand
 from tegtory.domain.commands.factory import StartFactoryCommand
 from tegtory.domain.entities import Factory, Product
 from tegtory.domain.events import EventType
+from tegtory.domain.queries.factory import GetAvailableProductsQuery
 from tegtory.domain.results import Failure, Success
 from tegtory.domain.use_cases import UCFactory
-from tegtory.infrastructure import CommandExecutor
+from tegtory.infrastructure import CommandExecutor, QueryExecutor
 from tegtory.infrastructure.injectors import inject, on_event
 from tegtory.presenters.aiogram.filters.factory import (
     ChooseProductFilter,
@@ -21,8 +22,8 @@ from tegtory.presenters.aiogram.filters.factory import (
 from tegtory.presenters.aiogram.handlers.factory.main import callback_factory
 from tegtory.presenters.aiogram.kb import factory as kb
 from tegtory.presenters.aiogram.messages import factory as msg
-from tegtory.presenters.shared.bot import TegtorySingleton
-from tegtory.presenters.shared.utils import get_factory
+from tegtory.presenters.aiogram.utils import get_factory
+from tegtory.presenters.bot import TegtorySingleton
 
 router = Router()
 
@@ -33,13 +34,17 @@ async def choose_product(
     call: types.CallbackQuery,
     user: entities.User,
     factory: entities.Factory,
-    use_case: FromDishka[UCFactory],
+    query_executor: QueryExecutor,
 ) -> Any:
     can_start = await check_can_start_factory(user, factory)
     if can_start:
         return await call.answer(can_start, show_alert=True)
-    result = await use_case.get_available_products(factory)
-    markup = kb.get_choose_product_markup(str(call.data), result)
+    result: Success[list[Product]] | Failure = await query_executor.ask(
+        GetAvailableProductsQuery(factory_id=factory.id)
+    )
+    if isinstance(result, Failure):
+        return await call.answer(result.reason, show_alert=True)
+    markup = kb.get_choose_product_markup(str(call.data), result.data)
     await call.message.edit_caption(
         caption=msg.choose_product, reply_markup=markup
     )

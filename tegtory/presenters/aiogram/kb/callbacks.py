@@ -4,6 +4,7 @@ from enum import EnumType
 class CityCB(EnumType):
     back = "city"
     shop = "city__shop"
+    sell_product = "city__sell_product"
     search_shop = "city__search_shop"
     choose_product = "city_shop__choose_product"
     choose_amount = "city_shop__choose_amount"

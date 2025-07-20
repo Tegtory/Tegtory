@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.exceptions import TelegramBadRequest
 from aiogram.filters import BaseFilter
 
-from tegtory.presenters.shared.bot import TegtorySingleton
+from tegtory.presenters.bot import TegtorySingleton
 
 
 async def is_subscribed(user_id: int) -> bool:

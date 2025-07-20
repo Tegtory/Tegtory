@@ -7,8 +7,6 @@ from ..base import DependencyRequired
 
 
 class BaseCommandHandler[Command](DependencyRequired):
-    object_type: Any
-
     async def __call__(self, command: Command) -> Success | Failure:
         try:
             return Success(data=await self.execute(command))

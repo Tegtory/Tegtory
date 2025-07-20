@@ -10,7 +10,7 @@ from tegtory.presenters.aiogram.images import Images
 from tegtory.presenters.aiogram.kb import FactoryCB
 from tegtory.presenters.aiogram.kb import factory as kb
 from tegtory.presenters.aiogram.messages import factory as msg
-from tegtory.presenters.shared.utils import cache, get_factory
+from tegtory.presenters.aiogram.utils import cache, get_factory
 
 router = Router()
 

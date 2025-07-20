@@ -12,9 +12,7 @@ from tegtory.domain.use_cases.commands.base import BaseCommandHandler
 
 
 @dataclasses.dataclass(frozen=True)
-class RegisterUserCommandHandler(BaseCommandHandler):
-    object_type = RegisterUserCommand
-
+class RegisterUserCommandHandler(BaseCommandHandler[RegisterUserCommand]):
     repo: UserRepository
 
     async def execute(self, cmd: RegisterUserCommand) -> User | None:
@@ -24,9 +22,7 @@ class RegisterUserCommandHandler(BaseCommandHandler):
 
 
 @dataclasses.dataclass(frozen=True)
-class StartUserWorkCommandHandler(BaseCommandHandler):
-    object_type = StartUserWorkCommand
-
+class StartUserWorkCommandHandler(BaseCommandHandler[StartUserWorkCommand]):
     repo: UserRepository
     event_bus: EventBus
 

@@ -16,7 +16,7 @@ class User:
     id: int
     name: str
     username: str
-    money: int = 500
+    money: float = 500
     stolar: int = 0
     rating: int = 0
     league: str = "Не в лиге"

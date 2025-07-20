@@ -13,8 +13,6 @@ from .base import BaseQueryHandler
 
 @dataclasses.dataclass(frozen=True)
 class ListShopQueryHandler(BaseQueryHandler[ListShopQuery]):
-    object_type = ListShopQuery
-
     repo: ShopRepository
 
     async def handle(self, query: ListShopQuery) -> list[Shop]:
@@ -23,8 +21,6 @@ class ListShopQueryHandler(BaseQueryHandler[ListShopQuery]):
 
 @dataclasses.dataclass(frozen=True)
 class ShopQueryHandler(BaseQueryHandler[ShopQuery]):
-    object_type = ShopQuery
-
     repo: ShopRepository
 
     async def handle(self, query: ShopQuery) -> Shop | None:
@@ -35,8 +31,6 @@ class ShopQueryHandler(BaseQueryHandler[ShopQuery]):
 class ListShopNoDeliveryQueryHandler(
     BaseQueryHandler[ListShopNoDeliveryQuery]
 ):
-    object_type = ListShopNoDeliveryQuery
-
     repo: ShopRepository
 
     async def handle(self, query: ListShopNoDeliveryQuery) -> list[Shop]:
@@ -45,8 +39,6 @@ class ListShopNoDeliveryQueryHandler(
 
 @dataclasses.dataclass(frozen=True)
 class ListShopDeliveryQueryHandler(BaseQueryHandler[ListShopDeliveryQuery]):
-    object_type = ListShopDeliveryQuery
-
     repo: ShopRepository
 
     async def handle(self, query: ListShopDeliveryQuery) -> list[Shop]:

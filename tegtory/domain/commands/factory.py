@@ -15,7 +15,7 @@ class CreateFactoryCommand(BaseCommand):
 
 class PayRequiredCommand(BaseCommand):
     user_id: int
-    user_money: int
+    user_money: float
 
     def can_pay(self) -> None:
         if self.user_money < self.get_price():
@@ -26,7 +26,7 @@ class PayRequiredCommand(BaseCommand):
 
 
 class PayTaxCommand(PayRequiredCommand, FactoryRequiredCommand):
-    factory_tax: int
+    factory_tax: float
 
     def get_price(self) -> float | int:
         return self.factory_tax

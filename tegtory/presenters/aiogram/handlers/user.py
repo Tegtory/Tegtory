@@ -2,9 +2,8 @@ from aiogram import Router, types
 
 from tegtory.common.settings import ASSETS_DIR
 from tegtory.domain.entities import User
-
-from ..filters.profile import ProfileFilter
-from ..messages.user import format_user
+from tegtory.presenters.aiogram.filters.profile import ProfileFilter
+from tegtory.presenters.aiogram.messages.user import format_user
 
 router = Router()
 

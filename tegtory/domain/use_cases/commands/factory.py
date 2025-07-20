@@ -42,8 +42,6 @@ DEFAULT_AVAILABLE_PRODUCTS: list[Product] = [
 
 @dataclasses.dataclass(frozen=True)
 class CreateFactoryCommandHandler(BaseCommandHandler[CreateFactoryCommand]):
-    object_type = CreateFactoryCommand
-
     repo: FactoryRepository
     storage: StorageRepository
 
@@ -62,8 +60,6 @@ class CreateFactoryCommandHandler(BaseCommandHandler[CreateFactoryCommand]):
 @dataclasses.dataclass(frozen=True)
 @pay_required
 class PayTaxCommandHandler(BaseCommandHandler[PayTaxCommand]):
-    object_type = PayTaxCommand
-
     repo: FactoryRepository
     money_repo: UserRepository
 
@@ -74,8 +70,6 @@ class PayTaxCommandHandler(BaseCommandHandler[PayTaxCommand]):
 @dataclasses.dataclass(frozen=True)
 @pay_required
 class UpgradeFactoryCommandHandler(BaseCommandHandler[UpgradeFactoryCommand]):
-    object_type = UpgradeFactoryCommand
-
     factory: FactoryRepository
     money_repo: UserRepository
 
@@ -86,8 +80,6 @@ class UpgradeFactoryCommandHandler(BaseCommandHandler[UpgradeFactoryCommand]):
 @dataclasses.dataclass(frozen=True)
 @pay_required
 class HireWorkerCommandHandler(BaseCommandHandler[HireWorkerCommand]):
-    object_type = HireWorkerCommand
-
     repo: FactoryRepository
     money_repo: UserRepository
 
@@ -98,8 +90,6 @@ class HireWorkerCommandHandler(BaseCommandHandler[HireWorkerCommand]):
 
 @dataclasses.dataclass(frozen=True)
 class StartFactoryCommandHandler(BaseCommandHandler[StartFactoryCommand]):
-    object_type = StartFactoryCommand
-
     repository: FactoryRepository
     event_bus: EventBus
     logic: FactoryService

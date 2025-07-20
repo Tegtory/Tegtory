@@ -11,3 +11,7 @@ class GetFactoryByName(BaseQuery):
 
 class GetStorageQuery(BaseQuery):
     factory_id: int
+
+
+class GetAvailableProductsQuery(BaseQuery):
+    factory_id: int

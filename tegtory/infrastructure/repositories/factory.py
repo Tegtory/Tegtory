@@ -48,8 +48,8 @@ class FactoryRepositoryImpl(FactoryRepository):
         self.available_products[factory.id].append(product)
         return factory, product
 
-    async def get_available_products(self, factory: Factory) -> list[Product]:
-        return self.available_products.get(factory.id, [])
+    async def get_available_products(self, factory_id: int) -> list[Product]:
+        return self.available_products.get(factory_id, [])
 
     async def add_product_in_storage(
         self, storage_product: StorageProduct

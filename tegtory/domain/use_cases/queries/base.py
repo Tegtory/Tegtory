@@ -1,15 +1,12 @@
 from typing import Any
 
 from tegtory.common.exceptions import AppError
-from tegtory.domain.queries.base import BaseQuery
 from tegtory.domain.results import Failure, Success
 
 from ..base import DependencyRequired
 
 
 class BaseQueryHandler[Query](DependencyRequired):
-    object_type: type[BaseQuery]
-
     async def __call__(self, query: Query) -> Success | Failure:
         try:
             return Success(data=await self.handle(query))

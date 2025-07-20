@@ -22,7 +22,3 @@ class BotSingleton(Bot):
 
 class TegtorySingleton(BotSingleton):
     pass
-
-
-class MynoxSingleton(BotSingleton):
-    pass

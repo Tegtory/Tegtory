@@ -1,7 +1,8 @@
 import logging
 from collections.abc import Awaitable, Callable
-from typing import Any, Self, cast
+from typing import Any, Self, cast, get_args
 
+from tegtory.common.exceptions import AppError
 from tegtory.domain.results import Failure, Success
 
 logger = logging.getLogger(__name__)
@@ -39,5 +40,15 @@ async def preparing_executors() -> None:
         children = executor.handler_base_class.__subclasses__()
         for child in children:
             handler: Any = await container.get(child)
-            instance.register(handler.object_type, handler)
+            logger.info(f"Preparing {handler.__class__.__name__}")
+            logger.debug(f"Bases: {handler.__orig_bases__}")
+            logger.debug("=" * 50)
+            args = get_args(handler.__orig_bases__[0])
+            if not args:
+                logger.critical("Error, while preparing handler")
+                raise AppError(
+                    f"Missing generic type in {handler.__class__.__name__}"
+                )
+            instance.register(args[0], handler)
+
         logger.info(f"{executor.__name__} Prepared")

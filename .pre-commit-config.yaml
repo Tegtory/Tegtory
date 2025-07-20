@@ -1,27 +1,33 @@
 repos:
-  - repo: local
-
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
     hooks:
-      - id: ruff-format
-        name: ruff-format
-        description: "Run 'ruff format' for extremely fast Python formatting"
-        entry: ruff format
-        language: python
-        types: [ python ]
-        require_serial: true
-        pass_filenames: false
-        always_run: true
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: check-toml
+      - id: debug-statements
+      - id: detect-private-key
+      - id: end-of-file-fixer
+        types: [python]
+      - id: fix-byte-order-marker
+      - id: fix-encoding-pragma
+        args: [--remove]
+      - id: mixed-line-ending
+        args: [--fix=crlf]
+        types: [python]
+      - id: trailing-whitespace
 
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.5.7
+    hooks:
       - id: ruff
-        name: ruff
-        description: "Run 'ruff' for extremely fast Python linting"
-        entry: ruff check
-        language: python
-        types: [ python ]
-        require_serial: true
-        pass_filenames: false
-        always_run: true
+        args: [--fix]
+      - id: ruff-format
 
+  - repo: local
+    hooks:
       - id: pytest
         name: pytest
         description: 'Run tests with pytest'

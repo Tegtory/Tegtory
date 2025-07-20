@@ -13,7 +13,7 @@ class FactoryRepository(CrudRepository[Factory], Protocol):
     ) -> tuple[Factory, Product]:
         pass
 
-    async def get_available_products(self, factory: Factory) -> list[Product]:
+    async def get_available_products(self, factory_id: int) -> list[Product]:
         pass
 
     async def add_product_in_storage(

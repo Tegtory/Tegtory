@@ -79,3 +79,4 @@ async def factory_required_handler(
         await message.answer(
             factory_msg.need_to_create, reply_markup=kb_factory.create_markup
         )
+    return None

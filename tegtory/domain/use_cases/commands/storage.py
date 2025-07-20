@@ -10,8 +10,6 @@ from .pay_required import pay_required
 @dataclasses.dataclass(frozen=True)
 @pay_required
 class UpgradeStorageCommandHandler(BaseCommandHandler[UpgradeStorageCommand]):
-    object_type = UpgradeStorageCommand
-
     storage_repo: StorageRepository
     money_repo: UserRepository
 

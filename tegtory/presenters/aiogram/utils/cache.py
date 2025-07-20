@@ -3,7 +3,7 @@ from collections.abc import Callable
 from functools import wraps
 from typing import Any
 
-from tegtory.presenters.shared.utils.injection import smart_call
+from tegtory.presenters.aiogram.utils.injection import smart_call
 
 logger = logging.getLogger("cache")
 _temp: dict = {}

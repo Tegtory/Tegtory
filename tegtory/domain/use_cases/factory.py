@@ -22,13 +22,10 @@ class UCFactory(SafeCall, EventBased):
         self.logic = service
         self.money = money
 
-    async def get_available_products(self, factory: Factory) -> list[Product]:
-        return await self.repository.get_available_products(factory)
-
     async def find_product_by_name(
         self, factory: Factory, name: str
     ) -> Product | None:
-        products = await self.get_available_products(factory)
+        products = await self.repository.get_available_products(factory.id)
         return next((p for p in products if p.name == name), None)
 
     @on_event(EventType.StartFactory)

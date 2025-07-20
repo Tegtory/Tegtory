@@ -6,9 +6,9 @@ from aiogram.client.default import DefaultBotProperties
 from dishka.integrations.aiogram import setup_dishka
 
 from tegtory.infrastructure import container
-from tegtory.presenters.shared.bot import BotSingleton
-from tegtory.presenters.shared.middlewares.auth import AuthMiddleware
-from tegtory.presenters.shared.middlewares.executor import ExecutorMiddleware
+from tegtory.presenters.aiogram.middlewares.auth import AuthMiddleware
+from tegtory.presenters.aiogram.middlewares.executor import ExecutorMiddleware
+from tegtory.presenters.bot import BotSingleton
 
 logger = logging.getLogger(__name__)
 
