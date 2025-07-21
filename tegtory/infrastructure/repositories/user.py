@@ -31,7 +31,7 @@ class UserRepositoryImpl(UserRepository):
     ) -> None:
         pass
 
-    async def subtract(self, user_id: int, amount: int) -> None:
+    async def subtract(self, user_id: int, amount: float) -> None:
         user = self._filter_users(user_id)
         if user:
             logger.info(f"Subtracting user {user_id} with amount {amount}")

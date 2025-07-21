@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class CommandExecutor(BaseExecutor):
-    handler_base_class: type[BaseCommandHandler] = BaseCommandHandler
+    handler_base_class = BaseCommandHandler
 
     async def execute(self, command: BaseCommand) -> Success | Failure:
         logger.info(

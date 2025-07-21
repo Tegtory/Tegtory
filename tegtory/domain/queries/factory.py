@@ -1,17 +1,25 @@
 from .base import BaseQuery
 
 
-class GetFactoryQuery(BaseQuery):
+class BaseFactoryQuery(BaseQuery):
     factory_id: int
+
+
+class GetFactoryQuery(BaseFactoryQuery):
+    pass
 
 
 class GetFactoryByName(BaseQuery):
     factory_name: str
 
 
-class GetStorageQuery(BaseQuery):
-    factory_id: int
+class GetStorageQuery(BaseFactoryQuery):
+    pass
 
 
-class GetAvailableProductsQuery(BaseQuery):
-    factory_id: int
+class GetAvailableProductsQuery(BaseFactoryQuery):
+    pass
+
+
+class GetSpecificProductQuery(BaseFactoryQuery):
+    name: str

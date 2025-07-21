@@ -10,7 +10,7 @@ from tegtory.domain.services.factory import FactoryService
 @pytest.mark.asyncio
 async def test_hire_worker_successfully(mock_factory: Mock) -> None:
     mock_factory.hire_available = 1
-    result = FactoryService.hire_worker(mock_factory)
+    result = FactoryService.hire(mock_factory)
 
     mock_factory.hire.assert_called_once()
     assert result == mock_factory
@@ -23,7 +23,7 @@ async def test_hire_worker_failure_working_max_workers(
     mock_factory.hire_available = 0
 
     with pytest.raises(AppError):
-        FactoryService.hire_worker(mock_factory)
+        FactoryService.hire(mock_factory)
 
     mock_factory.hire.assert_not_called()
 

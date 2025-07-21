@@ -82,7 +82,11 @@ async def test_create_new_factory_failed(factory_repo: MagicMock) -> None:
 
 @pytest.mark.asyncio
 async def test_hire_worker_success(factory_repo: MagicMock) -> None:
-    command_handler = HireWorkerCommandHandler(factory_repo, AsyncMock())
+    money_mock = AsyncMock()
+    money_mock.subtract = AsyncMock()
+    command_handler = HireWorkerCommandHandler(
+        repo=factory_repo, money_repo=money_mock
+    )
     result = await command_handler(
         HireWorkerCommand(
             factory=Factory(
@@ -101,7 +105,11 @@ async def test_hire_worker_success(factory_repo: MagicMock) -> None:
 async def test_hire_worker_failure_insufficient_money(
     factory_repo: MagicMock,
 ) -> None:
-    command_handler = HireWorkerCommandHandler(factory_repo, AsyncMock())
+    money_mock = AsyncMock()
+    money_mock.subtract = AsyncMock()
+    command_handler = HireWorkerCommandHandler(
+        repo=factory_repo, money_repo=money_mock
+    )
     result = await command_handler(
         HireWorkerCommand(
             factory=Factory(name="1", id=1, level=100, workers=80),
@@ -130,7 +138,9 @@ async def test_hire_worker_failure_max_workers(
 
 @pytest.mark.asyncio
 async def test_pay_tax_success(factory_repo: MagicMock) -> None:
-    handler = PayTaxCommandHandler(factory_repo, AsyncMock())
+    money_mock = AsyncMock()
+    money_mock.subtract = AsyncMock()
+    handler = PayTaxCommandHandler(repo=factory_repo, money_repo=money_mock)
     result = await handler(
         PayTaxCommand(user_id=1, user_money=10000, factory_tax=1, factory_id=1)
     )
@@ -141,7 +151,11 @@ async def test_pay_tax_success(factory_repo: MagicMock) -> None:
 
 @pytest.mark.asyncio
 async def test_upgrade_factory_success(factory_repo: MagicMock) -> None:
-    handler = UpgradeFactoryCommandHandler(factory_repo, AsyncMock())
+    money_mock = AsyncMock()
+    money_mock.subtract = AsyncMock()
+    handler = UpgradeFactoryCommandHandler(
+        repo=factory_repo, money_repo=money_mock
+    )
     result = await handler(
         UpgradeFactoryCommand(
             factory_id=1, factory_upgrade_price=1, user_id=1, user_money=100

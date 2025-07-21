@@ -23,7 +23,11 @@ async def test_get_storage(storage_repository: Mock) -> None:
 
 @pytest.mark.asyncio
 async def test_upgrade_storage_success(storage_repository: Mock) -> None:
-    handler = UpgradeStorageCommandHandler(storage_repository, AsyncMock())
+    money_mock = AsyncMock()
+    money_mock.subtract = AsyncMock()
+    handler = UpgradeStorageCommandHandler(
+        storage_repo=storage_repository, money_repo=money_mock
+    )
     result = await handler(
         UpgradeStorageCommand(
             storage=Storage(), user_id=1, user_money=1000, factory_id=1

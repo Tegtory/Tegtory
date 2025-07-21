@@ -6,7 +6,7 @@ from tegtory.domain.use_cases.base import DependencyRequired
 
 class FactoryService(DependencyRequired):
     @staticmethod
-    def hire_worker(factory: Factory) -> Factory:
+    def hire(factory: Factory) -> Factory:
         if factory.hire_available == 0:
             raise AppError("Максимальное количество рабочих достигнуто")
         factory.hire()

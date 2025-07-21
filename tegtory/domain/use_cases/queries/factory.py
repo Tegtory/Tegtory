@@ -6,6 +6,7 @@ from tegtory.domain.interfaces.storage import StorageRepository
 from tegtory.domain.queries.factory import (
     GetAvailableProductsQuery,
     GetFactoryQuery,
+    GetSpecificProductQuery,
     GetStorageQuery,
 )
 from tegtory.domain.use_cases.queries.base import BaseQueryHandler
@@ -35,3 +36,14 @@ class GetAvailableProductsQueryHandler(
 
     async def handle(self, query: GetAvailableProductsQuery) -> list[Product]:
         return await self.repo.get_available_products(query.factory_id)
+
+
+@dataclasses.dataclass(frozen=True)
+class GetSpecificProductQueryHandler(
+    BaseQueryHandler[GetSpecificProductQuery]
+):
+    repo: FactoryRepository
+
+    async def handle(self, query: GetSpecificProductQuery) -> Product | None:
+        products = await self.repo.get_available_products(query.factory_id)
+        return next((p for p in products if p.name == query.name), None)

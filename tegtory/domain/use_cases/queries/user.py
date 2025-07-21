@@ -7,7 +7,7 @@ from tegtory.domain.use_cases.queries.base import BaseQueryHandler
 
 
 @dataclasses.dataclass(frozen=True)
-class GetUserQueryHandler(BaseQueryHandler):
+class GetUserQueryHandler(BaseQueryHandler[UserQuery]):
     repo: UserRepository
 
     async def handle(self, query: UserQuery) -> User | None:

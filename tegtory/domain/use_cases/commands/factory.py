@@ -12,11 +12,11 @@ from ...commands.factory import (
 )
 from ...entities.factory import StartFactoryEvent
 from ...events import EventType
-from ...interfaces import EventBus, FactoryRepository, UserRepository
+from ...interfaces import EventBus, FactoryRepository
 from ...interfaces.storage import StorageRepository
 from ...services.factory import FactoryService
 from .base import BaseCommandHandler
-from .pay_required import pay_required
+from .pay_required import PayRequiredMixin, pay_required
 
 DEFAULT_AVAILABLE_PRODUCTS: list[Product] = [
     Product(
@@ -58,31 +58,34 @@ class CreateFactoryCommandHandler(BaseCommandHandler[CreateFactoryCommand]):
 
 
 @dataclasses.dataclass(frozen=True)
-@pay_required
-class PayTaxCommandHandler(BaseCommandHandler[PayTaxCommand]):
+class PayTaxCommandHandler(
+    BaseCommandHandler[PayTaxCommand], PayRequiredMixin
+):
     repo: FactoryRepository
-    money_repo: UserRepository
 
+    @pay_required
     async def execute(self, cmd: PayTaxCommand) -> None:
         await self.repo.set_tax(cmd.factory_id, 0)
 
 
 @dataclasses.dataclass(frozen=True)
-@pay_required
-class UpgradeFactoryCommandHandler(BaseCommandHandler[UpgradeFactoryCommand]):
-    factory: FactoryRepository
-    money_repo: UserRepository
+class UpgradeFactoryCommandHandler(
+    BaseCommandHandler[UpgradeFactoryCommand], PayRequiredMixin
+):
+    repo: FactoryRepository
 
+    @pay_required
     async def execute(self, cmd: UpgradeFactoryCommand) -> None:
-        await self.factory.upgrade(cmd.factory_id)
+        await self.repo.upgrade(cmd.factory_id)
 
 
 @dataclasses.dataclass(frozen=True)
-@pay_required
-class HireWorkerCommandHandler(BaseCommandHandler[HireWorkerCommand]):
+class HireWorkerCommandHandler(
+    BaseCommandHandler[HireWorkerCommand], PayRequiredMixin
+):
     repo: FactoryRepository
-    money_repo: UserRepository
 
+    @pay_required
     async def execute(self, cmd: HireWorkerCommand) -> None:
         cmd.factory.hire()
         await self.repo.hire(cmd.factory.id)

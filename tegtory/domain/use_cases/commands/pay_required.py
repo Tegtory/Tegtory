@@ -1,23 +1,23 @@
+import dataclasses
+from collections.abc import Callable
 from functools import wraps
 from typing import Any
 
-from tegtory.common.exceptions import AppError
+from tegtory.domain.commands import PayRequiredCommand
+from tegtory.domain.interfaces import UserRepository
 
-from ...commands.factory import PayRequiredCommand
+
+@dataclasses.dataclass(frozen=True)
+class PayRequiredMixin:
+    money_repo: UserRepository
 
 
-def pay_required(cls: type) -> type:
-    if not hasattr(cls, "execute"):
-        raise AppError("Method execute must be overridden")
-
-    old_call = cls.execute
-
-    @wraps(old_call)
-    async def wrapper(self: Any, cmd: PayRequiredCommand) -> Any:
+def pay_required(func: Callable) -> Callable:
+    @wraps(func)
+    async def wrapper(self: PayRequiredMixin, cmd: PayRequiredCommand) -> Any:
         cmd.can_pay()
-        result = await old_call(self, cmd)
+        result = await func(self, cmd)
         await self.money_repo.subtract(cmd.user_id, cmd.get_price())
         return result
 
-    cls.execute = wrapper
-    return cls
+    return wrapper

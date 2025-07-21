@@ -76,7 +76,6 @@ select = [
     "INP",
     "SIM",
     "TD",
-    "TC",
     "C90",
     "N",
     "PL",
@@ -111,12 +110,11 @@ docstring-code-line-length = "dynamic"
 branch = true
 omit = [
     "tests/*",
-    "tegtory/domain/interfaces/*",
 ]
 
 
 [tool.coverage.report]
 exclude_also = [
-    "raise AssertionError",
     "raise NotImplementedError",
+    "pass"
 ]

@@ -3,7 +3,6 @@ from unittest.mock import AsyncMock, MagicMock, Mock
 import pytest
 
 from tegtory.domain.entities import Factory
-from tegtory.domain.use_cases import UCFactory
 
 
 @pytest.fixture
@@ -14,11 +13,6 @@ def mock_user() -> MagicMock:
     mock_user.name = "Test User"
     mock_user.username = "testuser"
     return mock_user
-
-
-@pytest.fixture
-def uc_factory(factory_repository: Mock) -> UCFactory:
-    return UCFactory(factory_repository, AsyncMock(), AsyncMock(), AsyncMock())
 
 
 @pytest.fixture
