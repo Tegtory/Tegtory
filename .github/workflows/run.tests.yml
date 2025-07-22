@@ -7,19 +7,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Python 3.12
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.12"
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.12"
 
-    - name: check ruff
-      run: |
-        pip install ruff
-        ruff check .
+      - name: check ruff
+        run: |
+          pip install -r requirements.txt
+          ruff check .
 
-    - name: Test with pytest
-      run: |
-        pip install -r requirements.txt
-        pytest
+      - name: check mypy
+        run: |
+          mypy .
+
+      - name: Test with pytest
+        run: |
+          pytest

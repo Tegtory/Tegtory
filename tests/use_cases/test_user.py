@@ -1,33 +1,16 @@
 import time
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import MagicMock
 
 import pytest
 
-from domain.commands.user import RegisterUserCommand, StartUserWorkCommand
-from domain.entities import Factory, Product, User
-from domain.interfaces import UserRepository
-from domain.results import Failure, Success
-from domain.use_cases.commands.user import (
+from tegtory.domain.commands import RegisterUserCommand, StartUserWorkCommand
+from tegtory.domain.entities import Factory, Product, User
+from tegtory.domain.results import Failure, Success
+from tegtory.domain.use_cases.commands.user import (
     RegisterUserCommandHandler,
     StartUserWorkCommandHandler,
 )
-from domain.use_cases.user import UserEvent
-
-
-@pytest.fixture
-def user_repo() -> MagicMock:
-    repo = MagicMock(spec=UserRepository)
-    repo.create = AsyncMock()
-    repo.update = AsyncMock()
-    repo.get = AsyncMock()
-    return repo
-
-
-@pytest.fixture
-def event_bus() -> MagicMock:
-    bus = MagicMock()
-    bus.emit = AsyncMock()
-    return bus
+from tegtory.domain.use_cases.event.user import UserEvent
 
 
 @pytest.mark.asyncio
@@ -47,13 +30,12 @@ async def test_create_user(user_repo: MagicMock) -> None:
 
 
 @pytest.mark.asyncio
-async def test_subtract_money(user_repo: MagicMock) -> None:
+async def test_subtract_money_failure_bad_data(user_repo: MagicMock) -> None:
     event = UserEvent(user_repo, MagicMock())
-    user = User(id=1, name="User", username="user", money=100)
-    await event._subtract_user_money({"user": user, "amount": 30})
+    result = await event._subtract_user_money({"user": 1, "amount": 30})
 
-    assert user.money == 100 - 30
-    user_repo.update.assert_called_once_with(user)
+    assert not result
+    user_repo.update.assert_not_called()
 
 
 @pytest.mark.asyncio

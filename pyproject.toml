@@ -1,0 +1,120 @@
+[project]
+name = "tegtory"
+
+[tool.mypy]
+python_version = 3.12
+check_untyped_defs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_return_any = true
+strict_equality = true
+ignore_missing_imports = true
+show_error_codes = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = 'tegtory.presenters.aiogram.*'
+disable_error_code="union-attr"
+
+[tool.pytest.ini_options]
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+
+line-length = 79
+indent-width = 4
+target-version = "py313"
+
+[tool.ruff.lint]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+select = [
+    "E4",
+    "E7",
+    "E9",
+    "F",
+    "I",
+    "E",
+    "T",
+    "T201",
+    "W",
+    "B",
+    "ERA",
+    "ASYNC",
+    "FBT",
+    "A",
+    "INP",
+    "SIM",
+    "TD",
+    "C90",
+    "N",
+    "PL",
+    "PLE",
+    "PLR",
+    "PLW",
+    "UP",
+    "FURB",
+    "RUF",
+]
+ignore = ["B010", "RUF001", "RUF006"]
+
+fixable = ["ALL"]
+unfixable = []
+
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+quote-style = "double"
+
+indent-style = "space"
+
+skip-magic-trailing-comma = false
+
+line-ending = "auto"
+
+docstring-code-format = false
+
+docstring-code-line-length = "dynamic"
+
+[tool.coverage.run]
+branch = true
+omit = [
+    "tests/*",
+]
+
+
+[tool.coverage.report]
+exclude_also = [
+    "raise NotImplementedError",
+    "pass"
+]

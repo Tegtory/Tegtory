@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package grpc;
+
+enum status {STATUS_SUCCESSFULLY = 1; STATUS_FAILURE = 2;}
+
+message ChargeUser {
+    string id = 1;
+    int64 amount = 2;
+}
+
+message SendUser {
+    string from_id = 1;
+    string to_id = 2;
+    int64 amount = 3;
+}
+
+message Result {
+    status result = 1;
+}
+
+service MoneyService {
+    rpc charge(ChargeUser) returns (Result);
+    rpc add(ChargeUser) returns (Result);
+    rpc can_pay(ChargeUser) returns (Result);
+    rpc send(ChargeUser) returns (Result);
+}

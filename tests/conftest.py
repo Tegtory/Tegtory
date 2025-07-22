@@ -2,8 +2,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock
 
 import pytest
 
-from domain.entities import Factory
-from domain.use_cases import UCFactory
+from tegtory.domain.entities import Factory
 
 
 @pytest.fixture
@@ -14,11 +13,6 @@ def mock_user() -> MagicMock:
     mock_user.name = "Test User"
     mock_user.username = "testuser"
     return mock_user
-
-
-@pytest.fixture
-def uc_factory(factory_repository: Mock) -> UCFactory:
-    return UCFactory(factory_repository, AsyncMock(), AsyncMock())
 
 
 @pytest.fixture
@@ -42,3 +36,38 @@ def mock_factory() -> Mock:
     mock.workers = 0
     mock.tax = 10
     return mock
+
+
+@pytest.fixture
+def storage_repository(mock_factory: Mock) -> Mock:
+    mock = Mock()
+    mock.get = AsyncMock()
+    mock.upgrade = AsyncMock()
+
+    return mock
+
+
+@pytest.fixture
+def user_repo() -> MagicMock:
+    repo = MagicMock()
+    repo.create = AsyncMock()
+    repo.update = AsyncMock()
+    repo.get = AsyncMock()
+    return repo
+
+
+@pytest.fixture
+def shop_repo() -> MagicMock:
+    repo = MagicMock()
+    repo.by_name = AsyncMock()
+    repo.all = AsyncMock()
+    repo.all_required_delivery = AsyncMock()
+    repo.all_not_required_delivery = AsyncMock()
+    return repo
+
+
+@pytest.fixture
+def event_bus() -> MagicMock:
+    bus = MagicMock()
+    bus.emit = AsyncMock()
+    return bus

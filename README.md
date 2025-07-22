@@ -1,57 +1,22 @@
 # Tegtory
-<p>
-    <a href="https://github.com/sheptalo/Tegtory/pulse" alt="Activity">
-        <img src="https://img.shields.io/github/commit-activity/m/sheptalo/Tegtory"  alt=""/></a>
-    <a href="https://github.com/sheptalo/Tegtory/discussions" alt="Discussions">
-        <img src="https://img.shields.io/github/discussions/sheptalo/Tegtory"  alt=""/></a>
-</p>
-    
+
 [![Tegtory functions](https://github.com/sheptalo/Tegtory/actions/workflows/run.tests.yml/badge.svg)](https://github.com/sheptalo/Tegtory/actions/workflows/run.tests.yml)
+[![Pulse](https://img.shields.io/github/commit-activity/m/sheptalo/Tegtory)](https://github.com/sheptalo/Tegtory/pulse)
 
-## Описание и функционал
+## Описание
 
-Создай свою фабрику и подними ее в вершины таблицы лидеров вместе с друзьями.
+Tegtory - Экосистема объединяющая мини-игры вместе
 
-Продавай свою продукцию в самые подходящие моменты
+Что это значит?
 
-Устал на фабрике? Развлекись в других ботах этого семейства ведь прогресс синхронизируется и заработав миллион в казино ты получишь его здесь
+Это значит, что у вас 1 аккаунт на весь функционал экосистемы, один баланс, одно имя
 
-# Нашел баг? Создай Issue!
+Вы можете стать богачом играя в лотерею или став успешным директором фабрики - это ваш выбор
 
-Если столкнулся с багом, сообщи об этом. Он будет исправлен в ближайшее время, ты получишь бонус и все будет классно.
+## Состав экосистемы
 
-Если ты используешь баги в личных целях будет бан.
+1. [@Tegtory](https://t.me/@tegtorybot) - Telegram бот, позволяющий стать директором фабрики и вести бизнес деятельность
 
-## Architecture
+## Contributing
 
-```text
-├──common
-├──docker
-├──domain
-│  ├───commands
-│  ├───context
-│  ├───entity
-│  ├───events
-│  ├───interfaces
-│  ├───policies
-│  ├───queries
-│  ├───services
-│  └───use_cases
-│      ├───commands
-│      └───queries
-├──infrastructure
-│  ├───events
-│  └───repositories
-├──presentors
-│  ├───aiogram # main tegtory specific modules
-│  ├───mynox # mynox specific modules
-│  └───shared # shared modules
-├──static
-│  └───tegtory
-└──tests
-    ├───entity
-    ├───presentors
-    └───use_cases
-```
-
----
+see [CONTRIBUTING.md](CONTRIBUTING.md)
