@@ -6,7 +6,6 @@ from tegtory.domain import services, use_cases
 from tegtory.domain.interfaces import (
     EventBus,
     FactoryRepository,
-    ShopRepository,
     UserRepository,
 )
 from tegtory.domain.interfaces.storage import StorageRepository
@@ -14,12 +13,9 @@ from tegtory.domain.use_cases.base import DependencyRequired
 
 from .events.eventbus import MemoryEventBus
 from .injectors import subscribe_all
-from .repositories import (
-    FactoryRepositoryImpl,
-    ShopRepositoryImpl,
-    UserRepositoryImpl,
-)
+from .repositories import FactoryRepositoryImpl
 from .repositories.storage import StorageRepositoryImpl
+from .repositories.user import RedisUserRepositoryImpl
 from .utils import get_children, load_packages
 
 logger = logging.getLogger(__name__)
@@ -28,9 +24,7 @@ load_packages(use_cases)
 load_packages(services)
 
 provider = Provider(scope=Scope.APP)
-provider.provide(UserRepositoryImpl, provides=UserRepository)
-
-provider.provide(ShopRepositoryImpl, provides=ShopRepository)
+provider.provide(RedisUserRepositoryImpl, provides=UserRepository)
 
 provider.provide(FactoryRepositoryImpl, provides=FactoryRepository)
 provider.provide(StorageRepositoryImpl, provides=StorageRepository)

@@ -1,4 +1,3 @@
-from tegtory.common.exceptions import NotEnoughPointsError
 from tegtory.domain.entities import Factory, Product, Storage
 
 from .base import BaseCommand
@@ -16,10 +15,6 @@ class CreateFactoryCommand(BaseCommand):
 class PayRequiredCommand(BaseCommand):
     user_id: int
     user_money: float
-
-    def can_pay(self) -> None:
-        if self.user_money < self.get_price():
-            raise NotEnoughPointsError()
 
     def get_price(self) -> float | int:
         raise NotImplementedError

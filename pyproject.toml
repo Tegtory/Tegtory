@@ -2,6 +2,7 @@
 name = "tegtory"
 
 [tool.mypy]
+plugins = ["pydantic.mypy"]
 python_version = 3.12
 check_untyped_defs = true
 disallow_untyped_defs = true
@@ -14,6 +15,15 @@ strict_equality = true
 ignore_missing_imports = true
 show_error_codes = true
 warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = 'tegtory.money_pb2,tegtory.money_pb2_grpc,tegtory.auth_pb2,tegtory.auth_pb2_grpc'
+disallow_untyped_defs = false
+disable_error_code="attr-defined,var-annotated"
+
+[[tool.mypy.overrides]]
+module = 'tegtory.infrastructure.repositories.*'
+disable_error_code="attr-defined,var-annotated"
 
 [[tool.mypy.overrides]]
 module = 'tegtory.presenters.aiogram.*'

@@ -19,5 +19,4 @@ class UserEvent(EventBased):
         if not isinstance(user, User) or not isinstance(amount, int):
             return
 
-        user.subtract_money(amount)
-        await self.repo.update(user)
+        await self.repo.subtract(user.id, amount)

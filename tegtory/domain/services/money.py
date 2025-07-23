@@ -6,7 +6,7 @@ from tegtory.domain.use_cases.base import EventBased
 
 class MoneyService(EventBased):
     async def charge(self, user: User, amount: int) -> None:
-        if not user.can_buy(amount):
+        if user.money < amount:
             raise NotEnoughPointsError
         await self.event_bus.emit(
             EventType.SubtractMoney, data={"user": user, "amount": amount}

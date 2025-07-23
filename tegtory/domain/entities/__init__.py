@@ -6,7 +6,6 @@ from .factory import (
     Storage,
     StorageProduct,
 )
-from .shop import Shop, ShopProduct
 from .user import Dignity, User
 
 __all__ = [
@@ -14,8 +13,6 @@ __all__ = [
     "Dignity",
     "Factory",
     "Product",
-    "Shop",
-    "ShopProduct",
     "StartFactoryEvent",
     "Storage",
     "StorageProduct",

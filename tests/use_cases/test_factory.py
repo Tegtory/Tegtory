@@ -2,6 +2,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
+from tegtory.common.exceptions import NotEnoughPointsError
 from tegtory.domain.commands import PayTaxCommand
 from tegtory.domain.commands.factory import (
     CreateFactoryCommand,
@@ -106,7 +107,7 @@ async def test_hire_worker_failure_insufficient_money(
     factory_repo: MagicMock,
 ) -> None:
     money_mock = AsyncMock()
-    money_mock.subtract = AsyncMock()
+    money_mock.subtract = AsyncMock(side_effect=NotEnoughPointsError)
     command_handler = HireWorkerCommandHandler(
         repo=factory_repo, money_repo=money_mock
     )
@@ -124,7 +125,9 @@ async def test_hire_worker_failure_insufficient_money(
 async def test_hire_worker_failure_max_workers(
     factory_repo: MagicMock,
 ) -> None:
-    command_handler = HireWorkerCommandHandler(factory_repo, AsyncMock())
+    command_handler = HireWorkerCommandHandler(
+        repo=factory_repo, money_repo=AsyncMock()
+    )
     result = await command_handler(
         HireWorkerCommand(
             factory=Factory(name="1", id=1, level=1, workers=1),

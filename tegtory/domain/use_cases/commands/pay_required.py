@@ -15,9 +15,8 @@ class PayRequiredMixin:
 def pay_required(func: Callable) -> Callable:
     @wraps(func)
     async def wrapper(self: PayRequiredMixin, cmd: PayRequiredCommand) -> Any:
-        cmd.can_pay()
-        result = await func(self, cmd)
         await self.money_repo.subtract(cmd.user_id, cmd.get_price())
+        result = await func(self, cmd)
         return result
 
     return wrapper

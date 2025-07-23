@@ -7,4 +7,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+RUN python -m grpc_tools.protoc --proto_path=./protos/ --python_out=. --grpc_python_out=. protos/tegtory/*.proto
+
 CMD ["python", "-m", "tegtory"]

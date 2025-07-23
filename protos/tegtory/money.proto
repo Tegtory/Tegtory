@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package grpc;
 
-enum status {STATUS_SUCCESSFULLY = 1; STATUS_FAILURE = 2;}
+enum status {STATUS_UNKNOWN = 0; STATUS_SUCCESSFULLY = 1; STATUS_FAILURE = 2;}
 
 message ChargeUser {
     string id = 1;

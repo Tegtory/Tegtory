@@ -6,6 +6,7 @@ from tegtory.domain.commands.user import (
 )
 from tegtory.domain.entities import User
 from tegtory.domain.entities.factory import StartFactoryEvent
+from tegtory.domain.entities.user import RegisterUser
 from tegtory.domain.events import EventType
 from tegtory.domain.interfaces import EventBus, UserRepository
 from tegtory.domain.use_cases.commands.base import BaseCommandHandler
@@ -17,7 +18,7 @@ class RegisterUserCommandHandler(BaseCommandHandler[RegisterUserCommand]):
 
     async def execute(self, cmd: RegisterUserCommand) -> User | None:
         return await self.repo.create(
-            User(id=cmd.user_id, name=cmd.name, username=cmd.username)
+            RegisterUser(id=cmd.user_id, name=cmd.name, username=cmd.username)
         )
 
 
@@ -27,8 +28,8 @@ class StartUserWorkCommandHandler(BaseCommandHandler[StartUserWorkCommand]):
     event_bus: EventBus
 
     async def execute(self, cmd: StartUserWorkCommand) -> None:
-        cmd.user.start_work(cmd.time)
-        await self.repo.update(cmd.user)
+        cmd.user.can_start_work()
+        await self.repo.start_work(cmd.user.id, cmd.time)
         await self.event_bus.emit(
             EventType.StartFactory,
             data=StartFactoryEvent(

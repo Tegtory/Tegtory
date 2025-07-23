@@ -1,10 +1,11 @@
 import time
-from unittest.mock import MagicMock
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
 from tegtory.domain.commands import RegisterUserCommand, StartUserWorkCommand
 from tegtory.domain.entities import Factory, Product, User
+from tegtory.domain.entities.user import RegisterUser
 from tegtory.domain.results import Failure, Success
 from tegtory.domain.use_cases.commands.user import (
     RegisterUserCommandHandler,
@@ -15,8 +16,7 @@ from tegtory.domain.use_cases.event.user import UserEvent
 
 @pytest.mark.asyncio
 async def test_create_user(user_repo: MagicMock) -> None:
-    expected_result = User(username="test", name="test", id=1)
-    user_repo.create.return_value = expected_result
+    expected_result = RegisterUser(id=1, username="test", name="test")
 
     query = RegisterUserCommandHandler(user_repo)
     result = await query(
@@ -24,7 +24,6 @@ async def test_create_user(user_repo: MagicMock) -> None:
     )
 
     assert isinstance(result, Success)
-    assert isinstance(result.data, User)
 
     user_repo.create.assert_called_once_with(expected_result)
 
@@ -42,10 +41,11 @@ async def test_subtract_money_failure_bad_data(user_repo: MagicMock) -> None:
 async def test_start_user_work(
     user_repo: MagicMock, event_bus: MagicMock
 ) -> None:
+    user_repo.start_work = AsyncMock()
     handler = StartUserWorkCommandHandler(user_repo, event_bus)
 
     cmd = StartUserWorkCommand(
-        user=User(id=1, name="User", username="user", money=100),
+        user=User(id=1, money=100),
         factory=Factory(id=1, name="Factory"),
         time=1,
         product=Product(name=""),
@@ -54,7 +54,7 @@ async def test_start_user_work(
 
     assert isinstance(result, Success)
     event_bus.emit.assert_called_once()
-    user_repo.update.assert_called_once()
+    user_repo.start_work.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -66,8 +66,6 @@ async def test_start_user_work_failed_already_working(
     cmd = StartUserWorkCommand(
         user=User(
             id=1,
-            name="User",
-            username="user",
             money=100,
             end_work_time=now * 2,
         ),
