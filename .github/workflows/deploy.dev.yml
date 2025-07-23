@@ -13,5 +13,6 @@ jobs:
           clean: false
           path: "tegtory-dev"
       - run: |
-          docker compose -f docker/docker-compose.dev.yml down 
+          cd tegtory-dev
+          docker compose -f docker/docker-compose.dev.yml down
           docker compose -f docker/docker-compose.dev.yml up -d --build
