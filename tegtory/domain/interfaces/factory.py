@@ -1,10 +1,18 @@
 from typing import Protocol
 
 from tegtory.domain.entities import Factory, Product, StorageProduct
-from tegtory.domain.interfaces.base import CrudRepository
 
 
-class FactoryRepository(CrudRepository[Factory], Protocol):
+class FactoryRepository(Protocol):
+    async def get(self, item_id: int) -> Factory | None:
+        pass
+
+    async def create(self, item: Factory) -> Factory:
+        pass
+
+    async def update(self, item: Factory) -> Factory:
+        pass
+
     async def by_name(self, name: str) -> Factory | None:
         pass
 

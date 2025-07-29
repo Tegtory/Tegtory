@@ -5,7 +5,7 @@ from tegtory.domain.queries.factory import GetAvailableProductsQuery
 from tegtory.domain.results import Failure, Success
 from tegtory.infrastructure import QueryExecutor
 from tegtory.presenters.aiogram.kb import city as kb
-from tegtory.presenters.aiogram.kb.callbacks import CityCB
+from tegtory.presenters.aiogram.kb.callbacks import CityCB, SellProductCallback
 from tegtory.presenters.aiogram.messages import city as msg
 from tegtory.presenters.aiogram.utils import get_factory
 
@@ -30,7 +30,7 @@ async def sell_product(
     return None
 
 
-@router.callback_query(F.data.startswith(CityCB.sell_product))
+@router.callback_query(SellProductCallback.filter())
 @get_factory
 async def choose_amount(call: types.CallbackQuery, factory: Factory) -> None:
     await call.answer("skposdf")

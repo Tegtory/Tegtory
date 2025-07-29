@@ -3,8 +3,10 @@ from typing import Any, ClassVar
 
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
+from aiogram.fsm.storage.redis import RedisStorage
 from dishka.integrations.aiogram import setup_dishka
 
+from tegtory.common.settings import settings
 from tegtory.infrastructure import container
 from tegtory.presenters.aiogram.middlewares.auth import AuthMiddleware
 from tegtory.presenters.aiogram.middlewares.executor import ExecutorMiddleware
@@ -42,7 +44,9 @@ class BaseService:
     def dp(self) -> Dispatcher:
         if isinstance(self._dp, Dispatcher):
             return self._dp
-        dp = Dispatcher()
+        redis = settings.redis_url
+        storage = RedisStorage.from_url(redis) if redis else None
+        dp = Dispatcher(storage=storage)
         self._register_middlewares(dp)
 
         self._dp = dp

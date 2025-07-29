@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from tegtory.domain.entities import Product
-from tegtory.presenters.aiogram.kb.callbacks import CityCB
+from tegtory.presenters.aiogram.kb.callbacks import CityCB, SellProductCallback
 
 back_city_button = InlineKeyboardButton(
     text="Обратно", callback_data=CityCB.back
@@ -27,7 +27,7 @@ def sell_products(products: list[Product]) -> InlineKeyboardMarkup:
     for i in products:
         builder.button(
             text=f"{i.name}, цена за ед. {i.price_multiply}",
-            callback_data=f"{CityCB.sell_product}:{i.name}",
+            callback_data=SellProductCallback(name=i.name).pack(),
         )
     builder.button(text="Обратно", callback_data=CityCB.back)
     builder.adjust(1, repeat=True)

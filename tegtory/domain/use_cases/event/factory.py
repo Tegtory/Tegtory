@@ -5,8 +5,6 @@ from tegtory.domain.entities.factory import StartFactoryEvent
 from tegtory.domain.events import on_event
 from tegtory.domain.events.event_types import EventType
 from tegtory.domain.interfaces import EventBus, FactoryRepository
-from tegtory.domain.services.factory import FactoryService
-from tegtory.domain.services.money import MoneyService
 from tegtory.domain.services.work import WorkService
 from tegtory.domain.use_cases.base import EventBased
 
@@ -15,8 +13,6 @@ from tegtory.domain.use_cases.base import EventBased
 class FactoryEvent(EventBased):
     repository: FactoryRepository
     event_bus: EventBus
-    money: MoneyService
-    service: FactoryService
 
     @on_event(EventType.StartFactory)
     async def handle_start_factory(self, data: StartFactoryEvent) -> None:

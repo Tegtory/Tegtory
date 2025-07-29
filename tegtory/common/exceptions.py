@@ -16,3 +16,7 @@ class TaxError(AppError):
 
 class DuringWorkError(AppError):
     message = "Невозможно выполнить действие во время работы"
+
+
+class FactoryRequiredError(AppError):
+    message = "Для выполнения действия необходима фабрика"

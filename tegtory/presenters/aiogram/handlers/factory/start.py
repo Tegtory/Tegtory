@@ -139,6 +139,7 @@ async def end_factory_work(data: dict[str, Factory | int]) -> None:
         return
     bot = Bot(settings.BOT_TOKEN)
     await bot.send_message(factory.id, msg.success_work_end.format(stock))
+    await bot.close()
 
 
 async def get_product_time(

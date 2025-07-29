@@ -1,16 +1,17 @@
 services:
-  bot:
+  tegtory-bot-dev:
     build:
       context: ../
       dockerfile: docker/Dockerfile
     container_name: tegtory-dev
     restart: unless-stopped
-  redis:
+  tegtory-dev-redis:
     image: redis:7
     command: redis-server --appendonly yes
+    container_name: tegtory-redis-dev
     volumes:
-      - redis_data:/data
+      - tegtory_dev_redis_data:/data
     restart: always
 
 volumes:
-  redis_data:
+  tegtory_dev_redis_data:

@@ -17,6 +17,3 @@ class ProductRepositoryImpl(ProductRepository):
     async def create(self, product: Product) -> Product:
         self.products.append(product)
         return product
-
-    async def update(self, product: Product) -> Product:
-        return product

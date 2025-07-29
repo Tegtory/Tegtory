@@ -22,7 +22,9 @@ class AuthMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: dict[str, Any],
     ) -> Any:
-        if not hasattr(event, "from_user"):
+        if not hasattr(event, "from_user") or not isinstance(
+            event.from_user, types.User
+        ):
             return None
         user = await self._get_user(event.from_user.id)
         if not user:

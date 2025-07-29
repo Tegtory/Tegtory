@@ -1,6 +1,7 @@
 import dataclasses
 import math
 import time
+from uuid import UUID
 
 from tegtory.common.exceptions import DuringWorkError
 
@@ -19,10 +20,16 @@ class RegisterUser:
 
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
-class User:
-    id: int
-    money: float = 500
+class Wallet:
+    owner_id: UUID
     stolar: int = 0
+    money: float = 500
+
+
+@dataclasses.dataclass(kw_only=True, frozen=True)
+class User:
+    iternal_id: UUID | None = None
+    id: int
     end_work_time: float = 0
 
     @property

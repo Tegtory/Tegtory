@@ -1,6 +1,6 @@
 from collections.abc import Callable
 
-from .event_types import EventType
+from tegtory.domain.events.event_types import EventType
 
 
 def on_event(event: EventType) -> Callable:
