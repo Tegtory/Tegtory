@@ -1,5 +1,6 @@
 [project]
 name = "tegtory"
+version = "0.1"
 
 [tool.mypy]
 plugins = ["pydantic.mypy"]

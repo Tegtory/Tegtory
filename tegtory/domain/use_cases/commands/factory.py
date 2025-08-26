@@ -44,7 +44,7 @@ DEFAULT_AVAILABLE_PRODUCTS: list[Product] = [
 ]
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, slots=True)
 class CreateFactoryCommandHandler(BaseCommandHandler[CreateFactoryCommand]):
     repo: FactoryRepository
     storage: StorageRepository
@@ -61,7 +61,7 @@ class CreateFactoryCommandHandler(BaseCommandHandler[CreateFactoryCommand]):
         return factory
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, slots=True)
 class PayTaxCommandHandler(BaseCommandHandler[PayTaxCommand]):
     repo: FactoryRepository
     wallet: WalletRepository
@@ -71,12 +71,11 @@ class PayTaxCommandHandler(BaseCommandHandler[PayTaxCommand]):
         if not factory:
             raise FactoryRequiredError
         if await self.wallet.charge(cmd.user_id, factory.tax):
-            await self.repo.set_tax(cmd.user_id, 0)
-            return
+            return await self.repo.set_tax(cmd.user_id, 0)
         raise NotEnoughPointsError
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, slots=True)
 class UpgradeFactoryCommandHandler(BaseCommandHandler[UpgradeFactoryCommand]):
     repo: FactoryRepository
     wallet: WalletRepository
@@ -86,11 +85,11 @@ class UpgradeFactoryCommandHandler(BaseCommandHandler[UpgradeFactoryCommand]):
         if not factory:
             raise FactoryRequiredError
         if await self.wallet.charge(cmd.user_id, factory.upgrade_price):
-            await self.repo.upgrade(factory.id)
+            return await self.repo.upgrade(factory.id)
         raise NotEnoughPointsError
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, slots=True)
 class HireWorkerCommandHandler(BaseCommandHandler[HireWorkerCommand]):
     repo: FactoryRepository
     wallet: WalletRepository
@@ -102,11 +101,11 @@ class HireWorkerCommandHandler(BaseCommandHandler[HireWorkerCommand]):
 
         if await self.wallet.charge(cmd.user_id, factory.hire_price):
             factory.hire()
-            await self.repo.hire(factory.id)
+            return await self.repo.hire(factory.id)
         raise NotEnoughPointsError
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, slots=True)
 class StartFactoryCommandHandler(BaseCommandHandler[StartFactoryCommand]):
     repository: FactoryRepository
     event_bus: EventBus

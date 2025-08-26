@@ -22,5 +22,5 @@ class BaseCommandHandler[Command](DependencyRequired):
                 raise e from e
             return Failure(reason=e.message)
 
-    async def execute(self, command: Command) -> Any:
+    async def execute(self, cmd: Command) -> Any:
         raise NotImplementedError

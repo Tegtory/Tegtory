@@ -32,7 +32,7 @@ message ChangeName {
 }
 
 service AuthService {
-  rpc register_telegram(AuthUser) returns (Empty);
+  rpc register_telegram(AuthUser) returns (User);
   rpc login_telegram(LoginUser) returns (User);
   rpc get(UserId) returns (User);
 }

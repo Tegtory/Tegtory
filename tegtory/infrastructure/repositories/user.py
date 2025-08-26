@@ -56,6 +56,7 @@ class RedisUserRepositoryImpl(UserRepository):
                 "end_work_time": cache_user.end_work_time,
             },
         )
+        self.redis.expire(f"user:{item_id}", 1800)
         return cache_user
 
     async def create(self, user: RegisterUser) -> User:
