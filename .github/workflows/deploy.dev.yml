@@ -11,8 +11,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           clean: false
-          path: "tegtory-dev"
+          path: "dev"
       - run: |
-          cd tegtory-dev
-          docker compose -f docker/docker-compose.dev.yml down
+          cd dev
           docker compose -f docker/docker-compose.dev.yml up -d --build

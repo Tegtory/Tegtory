@@ -1,9 +1,9 @@
 import logging
-from typing import cast
 
 from dishka import Provider, Scope, make_async_container, provide
 from redis.asyncio import Redis
 
+from tegtory.common.settings import settings
 from tegtory.domain import services, use_cases
 from tegtory.domain.interfaces import (
     EventBus,
@@ -11,10 +11,9 @@ from tegtory.domain.interfaces import (
     UserRepository,
 )
 from tegtory.domain.interfaces.storage import StorageRepository
+from tegtory.domain.interfaces.user import WalletRepository
 from tegtory.domain.use_cases.base import DependencyRequired
 
-from ..common.settings import settings
-from ..domain.interfaces.user import WalletRepository
 from .events.eventbus import MemoryEventBus
 from .injectors import subscribe_all
 from .repositories import FactoryRepositoryImpl
@@ -57,7 +56,7 @@ class EventBusProvider(Provider):
             password=settings.REDIS_PASSWORD,
             decode_responses=True,
         )
-        return cast(Redis, redis)
+        return redis
 
 
 container = make_async_container(provider, EventBusProvider())

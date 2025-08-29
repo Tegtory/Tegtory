@@ -1,10 +1,33 @@
 [project]
 name = "tegtory"
 version = "0.1"
+requires-python = ">=3.12"
+dependencies = [
+    "aiogram>=3.22.0",
+    "dishka>=1.6.0",
+    "grpcio>=1.74.0",
+    "grpcio-tools>=1.74.0",
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "redis>=6.4.0",
+    "sqlalchemy>=2.0.43",
+]
+
+[dependency-groups]
+dev = [
+    "coverage>=7.10.5",
+    "mypy>=1.17.1",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "ruff>=0.12.10",
+    "pre-commit>=3.0.0",
+    "pytest-cov==6.1.1",
+    "pytest-timeout==2.4.0"
+]
 
 [tool.mypy]
 plugins = ["pydantic.mypy"]
-python_version = 3.12
+python_version = "3.12"
 check_untyped_defs = true
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
@@ -20,11 +43,6 @@ warn_unreachable = true
 [[tool.mypy.overrides]]
 module = 'tegtory.money_pb2,tegtory.money_pb2_grpc,tegtory.auth_pb2,tegtory.auth_pb2_grpc'
 disallow_untyped_defs = false
-disable_error_code="attr-defined,var-annotated"
-
-[[tool.mypy.overrides]]
-module = 'tegtory.infrastructure.repositories.*'
-disable_error_code="attr-defined,var-annotated"
 
 [[tool.mypy.overrides]]
 module = 'tegtory.presenters.aiogram.*'

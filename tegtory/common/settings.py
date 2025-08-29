@@ -12,12 +12,13 @@ class Settings(BaseSettings):
     REDIS_PORT: int = 6379
     REDIS_USER: str = ""
     REDIS_PASSWORD: str = ""
-    USER_MICROSERVICE_URL: str
-    USER_MICROSERVICE_KEY: str
 
-    WALLET_SERVICE_URL: str
-    WALLET_SERVICE_KEY: str
-    WALLET_SERVICE_VALUE: str
+    USER_URL: str
+    USER_KEY: str
+
+    WALLET_URL: str
+    WALLET_KEY: str
+    WALLET_VALUE: str
 
     @property
     def redis_url(self) -> str:
@@ -28,7 +29,7 @@ class Settings(BaseSettings):
 
     @property
     def money_metadata(self) -> tuple[tuple[str, str]]:
-        return ((self.WALLET_SERVICE_KEY, self.WALLET_SERVICE_VALUE),)
+        return ((self.WALLET_KEY, self.WALLET_VALUE),)
 
 
 HIRE_PRICE = 370

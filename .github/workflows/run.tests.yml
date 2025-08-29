@@ -16,13 +16,15 @@ jobs:
 
       - name: check ruff
         run: |
-          pip install -r requirements.txt
-          ruff check .
+          pip install uv
+          uv sync
+          uv run python -m grpc_tools.protoc --proto_path=./protos/ --python_out=. --pyi_out=. --grpc_python_out=. protos/tegtory/*.proto
+          uv run ruff check .
 
       - name: check mypy
         run: |
-          mypy .
+          uv run mypy .
 
       - name: Test with pytest
         run: |
-          pytest
+          uv run pytest

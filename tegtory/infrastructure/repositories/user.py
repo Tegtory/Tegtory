@@ -23,7 +23,7 @@ class RedisUserRepositoryImpl(UserRepository):
     def __init__(self, redis: Redis) -> None:
         self.redis = redis
         channel = aio.secure_channel(
-            settings.USER_MICROSERVICE_URL, ssl_channel_credentials()
+            settings.USER_URL, ssl_channel_credentials()
         )
         self.client = AuthServiceStub(channel)  # type: ignore
 
@@ -43,7 +43,7 @@ class RedisUserRepositoryImpl(UserRepository):
         try:
             user = await self.client.login_telegram(
                 proto.LoginUser(telegram_id=item_id),
-                metadata=(("auth", settings.USER_MICROSERVICE_KEY),),
+                metadata=(("auth", settings.USER_KEY),),
             )
         except AioRpcError as e:
             logger.error(str(e))
@@ -65,7 +65,7 @@ class RedisUserRepositoryImpl(UserRepository):
             proto.AuthUser(
                 name=user.name, username=user.username, telegram_id=user.id
             ),
-            metadata=(("auth", settings.USER_MICROSERVICE_KEY),),
+            metadata=(("auth", settings.USER_KEY),),
         )
         return User(id=user.id, iternal_id=result.id)
 
@@ -78,7 +78,7 @@ class RedisUserRepositoryImpl(UserRepository):
 class WalletRepositoryImpl(WalletRepository):
     def __init__(self, user_repo: UserRepository) -> None:
         channel = aio.secure_channel(
-            settings.WALLET_SERVICE_URL, ssl_channel_credentials()
+            settings.WALLET_URL, ssl_channel_credentials()
         )
         self.client = MoneyServiceStub(channel)  # type: ignore
 
@@ -90,7 +90,7 @@ class WalletRepositoryImpl(WalletRepository):
         if not user or not user.iternal_id:
             return None
         wallet = await self.client.balance(
-            money_proto.User(id=user.iternal_id),
+            money_proto.User(id=str(user.iternal_id)),
             metadata=settings.money_metadata,
         )
         logger.info(f"received wallet {wallet=}")
@@ -100,10 +100,10 @@ class WalletRepositoryImpl(WalletRepository):
 
     async def charge(self, tgid: int, amount: float) -> bool:
         user = await self.user_repo.get(tgid)
-        if not user:
+        if not user or not user.iternal_id:
             return False
         result = await self.client.charge(
-            money_proto.ChargeUser(id=user.iternal_id, money=amount),
+            money_proto.ChargeUser(id=str(user.iternal_id), money=amount),
             metadata=settings.money_metadata,
         )
         return bool(result == money_proto.status.STATUS_SUCCESSFULLY)
@@ -113,6 +113,6 @@ class WalletRepositoryImpl(WalletRepository):
         if not user:
             return
         await self.client.add(
-            money_proto.ChargeUser(id=user.iternal_id, money=amount),
+            money_proto.ChargeUser(id=str(user.iternal_id), money=amount),
             metadata=settings.money_metadata,
         )
