@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package grpc;
+package auth;
 
 message Empty {}
 message Nothing {}
@@ -22,14 +22,19 @@ message LoginUser {
   int64 telegram_id = 1;
 }
 
+message UserId {
+  string id = 1;
+}
+
 message ChangeName {
   string id = 1;
   string name = 2;
 }
 
 service AuthService {
-  rpc register_telegram(AuthUser) returns (Empty);
+  rpc register_telegram(AuthUser) returns (User);
   rpc login_telegram(LoginUser) returns (User);
+  rpc get(UserId) returns (User);
 }
 
 service ProfileService {

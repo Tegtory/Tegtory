@@ -1,7 +1,12 @@
 import dataclasses
 
-from tegtory.common.exceptions import AppError
+from tegtory.common.exceptions import (
+    AppError,
+    FactoryRequiredError,
+    NotEnoughPointsError,
+)
 from tegtory.domain.entities import Factory, Product
+from tegtory.domain.interfaces.user import WalletRepository
 
 from ...commands.factory import (
     CreateFactoryCommand,
@@ -16,7 +21,6 @@ from ...interfaces import EventBus, FactoryRepository
 from ...interfaces.storage import StorageRepository
 from ...services.factory import FactoryService
 from .base import BaseCommandHandler
-from .pay_required import PayRequiredMixin, pay_required
 
 DEFAULT_AVAILABLE_PRODUCTS: list[Product] = [
     Product(
@@ -40,7 +44,7 @@ DEFAULT_AVAILABLE_PRODUCTS: list[Product] = [
 ]
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, slots=True)
 class CreateFactoryCommandHandler(BaseCommandHandler[CreateFactoryCommand]):
     repo: FactoryRepository
     storage: StorageRepository
@@ -57,41 +61,51 @@ class CreateFactoryCommandHandler(BaseCommandHandler[CreateFactoryCommand]):
         return factory
 
 
-@dataclasses.dataclass(frozen=True)
-class PayTaxCommandHandler(
-    BaseCommandHandler[PayTaxCommand], PayRequiredMixin
-):
+@dataclasses.dataclass(frozen=True, slots=True)
+class PayTaxCommandHandler(BaseCommandHandler[PayTaxCommand]):
     repo: FactoryRepository
+    wallet: WalletRepository
 
-    @pay_required
     async def execute(self, cmd: PayTaxCommand) -> None:
-        await self.repo.set_tax(cmd.factory_id, 0)
+        factory = await self.repo.get(cmd.user_id)
+        if not factory:
+            raise FactoryRequiredError
+        if await self.wallet.charge(cmd.user_id, factory.tax):
+            return await self.repo.set_tax(cmd.user_id, 0)
+        raise NotEnoughPointsError
 
 
-@dataclasses.dataclass(frozen=True)
-class UpgradeFactoryCommandHandler(
-    BaseCommandHandler[UpgradeFactoryCommand], PayRequiredMixin
-):
+@dataclasses.dataclass(frozen=True, slots=True)
+class UpgradeFactoryCommandHandler(BaseCommandHandler[UpgradeFactoryCommand]):
     repo: FactoryRepository
+    wallet: WalletRepository
 
-    @pay_required
     async def execute(self, cmd: UpgradeFactoryCommand) -> None:
-        await self.repo.upgrade(cmd.factory_id)
+        factory = await self.repo.get(cmd.user_id)
+        if not factory:
+            raise FactoryRequiredError
+        if await self.wallet.charge(cmd.user_id, factory.upgrade_price):
+            return await self.repo.upgrade(factory.id)
+        raise NotEnoughPointsError
 
 
-@dataclasses.dataclass(frozen=True)
-class HireWorkerCommandHandler(
-    BaseCommandHandler[HireWorkerCommand], PayRequiredMixin
-):
+@dataclasses.dataclass(frozen=True, slots=True)
+class HireWorkerCommandHandler(BaseCommandHandler[HireWorkerCommand]):
     repo: FactoryRepository
+    wallet: WalletRepository
 
-    @pay_required
     async def execute(self, cmd: HireWorkerCommand) -> None:
-        cmd.factory.hire()
-        await self.repo.hire(cmd.factory.id)
+        factory = await self.repo.get(cmd.user_id)
+        if not factory:
+            raise FactoryRequiredError
+
+        if await self.wallet.charge(cmd.user_id, factory.hire_price):
+            factory.hire()
+            return await self.repo.hire(factory.id)
+        raise NotEnoughPointsError
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass(frozen=True, slots=True)
 class StartFactoryCommandHandler(BaseCommandHandler[StartFactoryCommand]):
     repository: FactoryRepository
     event_bus: EventBus

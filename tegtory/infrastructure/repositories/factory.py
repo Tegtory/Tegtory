@@ -61,10 +61,10 @@ class FactoryRepositoryImpl(FactoryRepository):
 
         return storage_product
 
-    async def set_tax(self, factory_id: int, amount: int) -> None:
+    async def set_tax(self, factory_id: int, value: int) -> None:
         factory = self._filter_factories(factory_id)
         if factory:
-            factory.tax = amount
+            factory.tax = value
 
     async def hire(self, factory_id: int) -> None:
         """

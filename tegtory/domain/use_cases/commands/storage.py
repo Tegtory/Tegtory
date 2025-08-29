@@ -1,19 +1,25 @@
 import dataclasses
 
+from tegtory.common.exceptions import (
+    FactoryRequiredError,
+    NotEnoughPointsError,
+)
+from tegtory.domain.interfaces.user import WalletRepository
+
 from ...commands import UpgradeStorageCommand
-from ...interfaces import UserRepository
 from ...interfaces.storage import StorageRepository
 from .base import BaseCommandHandler
-from .pay_required import PayRequiredMixin, pay_required
 
 
 @dataclasses.dataclass(frozen=True)
-class UpgradeStorageCommandHandler(
-    BaseCommandHandler[UpgradeStorageCommand], PayRequiredMixin
-):
+class UpgradeStorageCommandHandler(BaseCommandHandler[UpgradeStorageCommand]):
     storage_repo: StorageRepository
-    money_repo: UserRepository
+    money_repo: WalletRepository
 
-    @pay_required
     async def execute(self, cmd: UpgradeStorageCommand) -> None:
-        await self.storage_repo.upgrade(cmd.factory_id)
+        storage = await self.storage_repo.get(cmd.user_id)
+        if not storage:
+            raise FactoryRequiredError
+        if self.money_repo.charge(cmd.user_id, storage.upgrade_price):
+            return await self.storage_repo.upgrade(cmd.user_id)
+        raise NotEnoughPointsError

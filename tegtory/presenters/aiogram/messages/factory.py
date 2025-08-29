@@ -1,3 +1,5 @@
+from tegtory.domain import entities
+
 factory_bot = "Бот #1452 докладывает:\n"
 
 need_to_create = "Чтобы выполнить это действие необходимо создать фабрику"
@@ -49,3 +51,11 @@ storage_products = "{} в количестве {} ед.\n"
 storage_footer = "\n\nЛимит склада {}"
 
 empty_tax = factory_bot + "У вас нет налогов, повезло повезло"
+
+
+def get_storage_page_text(storage: entities.Storage) -> str:
+    result = storage_title
+    for product, amount in storage.products.items():
+        result += storage_products.format(product.name, amount)
+    result += storage_footer.format(storage.max_stock)
+    return result

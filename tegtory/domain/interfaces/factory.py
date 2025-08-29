@@ -1,31 +1,22 @@
 from typing import Protocol
 
 from tegtory.domain.entities import Factory, Product, StorageProduct
-from tegtory.domain.interfaces.base import CrudRepository
 
 
-class FactoryRepository(CrudRepository[Factory], Protocol):
-    async def by_name(self, name: str) -> Factory | None:
-        pass
-
+class FactoryRepository(Protocol):
+    async def get(self, owner_id: int) -> Factory | None: ...
+    async def create(self, factory: Factory) -> Factory: ...
+    async def update(self, factory: Factory) -> Factory: ...
+    async def by_name(self, name: str) -> Factory | None: ...
+    async def hire(self, factory_id: int) -> None: ...
+    async def upgrade(self, factory_id: int) -> None: ...
+    async def set_tax(self, factory_id: int, value: int) -> None: ...
     async def add_available_product(
         self, factory: Factory, product: Product
-    ) -> tuple[Factory, Product]:
-        pass
-
-    async def get_available_products(self, factory_id: int) -> list[Product]:
-        pass
-
+    ) -> tuple[Factory, Product]: ...
+    async def get_available_products(
+        self, factory_id: int
+    ) -> list[Product]: ...
     async def add_product_in_storage(
         self, storage_product: StorageProduct
-    ) -> StorageProduct:
-        pass
-
-    async def hire(self, factory_id: int) -> None:
-        pass
-
-    async def upgrade(self, factory_id: int) -> None:
-        pass
-
-    async def set_tax(self, factory_id: int, value: int) -> None:
-        pass
+    ) -> StorageProduct: ...

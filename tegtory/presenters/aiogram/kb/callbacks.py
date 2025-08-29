@@ -1,5 +1,7 @@
 from enum import EnumType
 
+from aiogram.filters.callback_data import CallbackData
+
 
 class CityCB(EnumType):
     back = "city"
@@ -33,3 +35,8 @@ class FactoryCB(EnumType):
 class OtherCB(EnumType):
     working_on = "other__working_on"
     subscribe = "other__subscribe"
+    balance = "other__balance"
+
+
+class SellProductCallback(CallbackData, prefix=CityCB.sell_product):
+    name: str

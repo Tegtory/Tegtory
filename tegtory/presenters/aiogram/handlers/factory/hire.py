@@ -40,19 +40,14 @@ async def workers_page(
 @router.callback_query(F.data == FactoryCB.hire)
 @get_factory
 async def hire(
-    call: types.CallbackQuery,
-    user: entities.User,
-    factory: entities.Factory,
-    cmd_executor: CommandExecutor,
+    call: types.CallbackQuery, cmd_executor: CommandExecutor
 ) -> None:
     result = await cmd_executor.execute(
-        HireWorkerCommand(
-            factory=factory, user_money=user.money, user_id=user.id
-        )
+        HireWorkerCommand(user_id=call.from_user.id)
     )
     markup = kb.failed_hire_markup
     if isinstance(result, results.Success):
         await workers_page(call)
-        return None
+        return
 
     await call.message.edit_caption(caption=result.reason, reply_markup=markup)

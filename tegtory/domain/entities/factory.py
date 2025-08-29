@@ -2,6 +2,7 @@ import dataclasses
 import math
 import time
 
+from tegtory.common.deprecated import deprecated
 from tegtory.common.exceptions import AppError, DuringWorkError
 from tegtory.common.settings import HIRE_PRICE
 
@@ -71,15 +72,15 @@ class Factory:
     id: int
     name: str
     storage: Storage = dataclasses.field(default_factory=lambda: Storage())
-    level: int = 10
+    money_invested: int = 0
     end_work_time: float = 0.0
     tax: int = 1
-    workers: int = 10
+    workers: int = 0
 
     def __str__(self) -> str:
         return f"""\
 🏭 *{self.name}*
-🔧 *Уровень:* {self.level}
+🔧 *Вложения:* {self.money_invested}
 🚧 *Статус:* {"Работает" if self.state else "Не работает"}
 💸 *Налоги:* {self.tax}
 👷‍ *Работники:* {self.workers}
@@ -94,12 +95,14 @@ class Factory:
         return max(1, self.workers) * HIRE_PRICE
 
     @property
+    @deprecated
     def hire_available(self) -> int:
-        return self.level - self.workers
+        return True
 
     @property
+    @deprecated
     def upgrade_price(self) -> int:
-        return (self.level + 2) * 370
+        return math.ceil(370 * (1.05 ** (5 - 1)) * (5 // 2) ** 1.2)
 
     @property
     def work_time_remained(self) -> float:

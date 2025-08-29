@@ -4,39 +4,50 @@
 
 - python 3.12+
 - aiogram
-- dishka
-- pydantic
 
 ## Architecture
 
 ```text
-├──common
-├──docker
-├──domain
-│  ├───commands
-│  ├───context
-│  ├───entity
-│  ├───events
-│  ├───interfaces
-│  ├───policies
-│  ├───queries
-│  ├───services
-│  └───use_cases
-│      ├───commands
-│      └───queries
-├──infrastructure
-│  ├───events
-│  └───repositories
-├──presentors
-│  ├───aiogram # main tegtory specific modules
-│  ├───mynox # mynox specific modules
-│  └───shared # shared modules
-├──static
-│  └───tegtory
-└──tests
-    ├───entity
-    ├───presentors
-    └───use_cases
+.
+├── docker
+├── protos
+│   └── tegtory
+├── tegtory
+│   ├── common # config/exceptions
+│   ├── domain # domain logic
+│   │   ├── commands
+│   │   ├── entities
+│   │   ├── events
+│   │   ├── interfaces
+│   │   ├── queries
+│   │   ├── services # domain services
+│   │   └── use_cases # domain use cases splited by type
+│   │       ├── commands # commands use cases perform an action and not return any data. Only action result
+│   │       ├── event # event use cases executes on events
+│   │       └── queries # queries use cases only return data
+│   ├── infrastructure
+│   │   ├── events # event specific infrastructure
+│   │   ├── migration # migrations for database
+│   │   │   └── versions
+│   │   └── repositories # interfaces implementations
+│   ├── presenters
+│   │   └── aiogram # Tegtory bot implementation
+│   │       ├── filters
+│   │       ├── handlers
+│   │       │   ├── city
+│   │       │   └── factory
+│   │       ├── kb
+│   │       ├── messages
+│   │       ├── middlewares
+│   │       ├── states
+│   │       └── utils
+│   └── static # static resources like images, videos, etc.
+│       └── tegtory
+└── tests # tests for domain, infrastructure, presenters, services, use cases
+    ├── entities
+    ├── presenters
+    ├── services
+    └── use_cases
 ```
 
 ---
@@ -44,7 +55,6 @@
 # Philosophy
 
 Project architecture was built with clean code in mind. So here you can find some layers (domain, infrastructure, presenters), CQRS, Entities, Dependency injection and other
-
 
 ## `domain/` - clean business logic
 
@@ -87,8 +97,7 @@ we want to get all units, but in domain layer we can't work with real database, 
    from typing import Protocol
    
    class CrudRepository(Protocol):
-       async def all(self) -> list: # 1
-           pass # 2
+       async def all(self) -> list: ...
     ```
 
 2. use it in command/query handler
@@ -98,7 +107,6 @@ we want to get all units, but in domain layer we can't work with real database, 
 
 
 - #1 All protocols functions must be async, and typed
-- #2 don't write logic, only declaration
 
 ---
 
@@ -127,3 +135,5 @@ ruff check --fix # check some coding format rules
 ```
 
 this page is under TODO, be patient. It will be updated very soon
+
+You can help to improve this project. Every contribution is welcome!

@@ -35,20 +35,12 @@ async def tax_page(
 
 
 @router.callback_query(F.data == FactoryCB.pay_tax)
-@get_factory
 async def pay_tax(
     call: types.CallbackQuery,
-    factory: entities.Factory,
-    user: entities.User,
     cmd_executor: CommandExecutor,
 ) -> None:
     result = await cmd_executor.execute(
-        PayTaxCommand(
-            user_id=user.id,
-            user_money=user.money,
-            factory_id=factory.id,
-            factory_tax=factory.tax,
-        )
+        PayTaxCommand(user_id=call.from_user.id)
     )
     if isinstance(result, results.Success):
         text = msg.tax_page.format(0)

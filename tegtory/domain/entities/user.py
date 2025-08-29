@@ -1,27 +1,35 @@
 import dataclasses
 import math
 import time
+from uuid import UUID
 
 from tegtory.common.exceptions import DuringWorkError
 
 
-@dataclasses.dataclass(kw_only=True)
+@dataclasses.dataclass(kw_only=True, frozen=True)
 class Dignity:
     name: str
     user: "User"
 
 
-@dataclasses.dataclass(kw_only=True)
-class User:
+@dataclasses.dataclass(kw_only=True, frozen=True)
+class RegisterUser:
     id: int
-    name: str
     username: str
-    money: float = 500
+    name: str = ""
+
+
+@dataclasses.dataclass(kw_only=True, frozen=True)
+class Wallet:
+    owner_id: UUID
     stolar: int = 0
-    rating: int = 0
-    league: str = "Не в лиге"
-    titles: list[str] = dataclasses.field(default_factory=list)
-    is_admin: bool = False
+    money: float = 500
+
+
+@dataclasses.dataclass(kw_only=True, frozen=True)
+class User:
+    iternal_id: UUID | None = None
+    id: int
     end_work_time: float = 0
 
     @property
@@ -36,16 +44,6 @@ class User:
     def state(self) -> bool:
         return self.work_time_remaining > 0.0
 
-    def start_work(self, time_amount: float | int) -> None:
+    def can_start_work(self) -> None:
         if self.state:
             raise DuringWorkError
-        self.end_work_time = time.time() + time_amount
-
-    def set_name(self, name: str) -> None:
-        self.name = name
-
-    def subtract_money(self, amount: int) -> None:
-        self.money -= amount
-
-    def can_buy(self, price: int) -> bool:
-        return self.money >= price

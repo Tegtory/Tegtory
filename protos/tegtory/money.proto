@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package money;
+
+enum status {STATUS_UNKNOWN = 0; STATUS_SUCCESSFULLY = 1; STATUS_FAILURE = 2;}
+
+message ChargeUser {
+    string id = 1;
+    double money = 2;
+}
+message User {
+    string id = 1;
+}
+message Balance {
+    string balance = 1;
+}
+
+message SendUser {
+    string from_id = 1;
+    string to_id = 2;
+    double amount = 3;
+}
+
+message Result {
+    status result = 1;
+}
+
+service MoneyService {
+    rpc balance (User) returns (Balance);
+    rpc charge (ChargeUser) returns (Result);
+    rpc add (ChargeUser) returns (Result);
+    rpc can_pay (ChargeUser) returns (Result);
+    rpc send (ChargeUser) returns (Result);
+}

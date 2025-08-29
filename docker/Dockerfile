@@ -2,9 +2,11 @@ FROM python:3.12
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install uv
 
 COPY . .
 
-CMD ["python", "-m", "tegtory"]
+RUN uv sync
+RUN uv run python -m grpc_tools.protoc --proto_path=./protos/ --python_out=. --grpc_python_out=. protos/tegtory/*.proto
+
+CMD ["uv", "run", "python", "-m", "tegtory"]

@@ -4,6 +4,7 @@ from typing import Any, Self, cast, get_args
 
 from tegtory.common.exceptions import AppError
 from tegtory.domain.results import Failure, Success
+from tegtory.infrastructure.di import container
 
 logger = logging.getLogger(__name__)
 
@@ -14,7 +15,7 @@ class BaseExecutor:
 
     def __new__(cls) -> Self:
         if not cls._instance:
-            cls._instance: Self = object.__new__(cls)
+            cls._instance = object.__new__(cls)
         return cast("Self", cls._instance)
 
     def __init__(self) -> None:
@@ -32,8 +33,6 @@ class BaseExecutor:
 
 
 async def preparing_executors() -> None:
-    from tegtory.infrastructure.di import container
-
     for executor in BaseExecutor.__subclasses__():
         logger.info(f"Preparing {executor.__name__}")
         instance = executor()

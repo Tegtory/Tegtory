@@ -1,5 +1,4 @@
 from collections.abc import Callable
-from typing import Any
 
 from aiogram import F, Router, types
 from aiogram.exceptions import TelegramBadRequest
@@ -31,14 +30,17 @@ async def create_factory_callback(
 @router.message(StateFilter(states.Create.name))
 async def finish_create_factory_handler(
     message: types.Message, state: FSMContext, cmd_executor: CommandExecutor
-) -> Any:
+) -> None:
     await message.delete()
+    if not message.from_user:
+        return
     result = await cmd_executor.execute(
         CreateFactoryCommand(id=message.from_user.id, name=str(message.text))
     )
     if isinstance(result, results.Success):
         await state.clear()
-        return await open_factory(message)
+        await open_factory(message)
+        return
     await message.answer(msg.unique_name)
 
 
@@ -48,7 +50,7 @@ async def finish_create_factory_handler(
 async def upgrade_factory(
     call: types.CallbackQuery,
     factory: entities.Factory,
-    cached: Any,
+    cached: str | types.InputFile,
     cache_func: Callable,
 ) -> None:
     try:
@@ -68,24 +70,16 @@ async def upgrade_factory(
 
 
 @router.callback_query(F.data == FactoryCB.upgrade_conf)
-@get_factory
 async def try_to_upgrade_factory(
     call: types.CallbackQuery,
-    user: entities.User,
-    factory: entities.Factory,
     cmd_executor: CommandExecutor,
-) -> Any:
+) -> None:
     result = await cmd_executor.execute(
-        UpgradeFactoryCommand(
-            factory_id=factory.id,
-            factory_upgrade_price=factory.upgrade_price,
-            user_id=user.id,
-            user_money=user.money,
-        )
+        UpgradeFactoryCommand(user_id=call.from_user.id)
     )
-
     if isinstance(result, results.Success):
-        return await upgrade_factory(call)
+        await upgrade_factory(call)
+        return
     await call.message.edit_caption(
         caption=result.reason, reply_markup=kb.failed_upgrade_markup
     )

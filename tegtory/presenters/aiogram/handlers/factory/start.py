@@ -1,7 +1,8 @@
 from typing import Any
 
-from aiogram import Router, types
+from aiogram import Bot, Router, types
 
+from tegtory.common.settings import settings
 from tegtory.domain import entities, results
 from tegtory.domain.commands import StartUserWorkCommand
 from tegtory.domain.commands.factory import StartFactoryCommand
@@ -24,7 +25,6 @@ from tegtory.presenters.aiogram.handlers.factory.main import callback_factory
 from tegtory.presenters.aiogram.kb import factory as kb
 from tegtory.presenters.aiogram.messages import factory as msg
 from tegtory.presenters.aiogram.utils import get_factory
-from tegtory.presenters.bot import TegtorySingleton
 
 router = Router()
 
@@ -137,8 +137,9 @@ async def end_factory_work(data: dict[str, Factory | int]) -> None:
     stock = data.get("stock")
     if not isinstance(factory, Factory) or not isinstance(stock, int):
         return
-    bot = TegtorySingleton()
+    bot = Bot(settings.BOT_TOKEN)
     await bot.send_message(factory.id, msg.success_work_end.format(stock))
+    await bot.close()
 
 
 async def get_product_time(

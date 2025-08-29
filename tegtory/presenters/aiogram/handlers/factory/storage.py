@@ -22,36 +22,20 @@ router = Router()
 async def open_storage(
     call: types.CallbackQuery, storage: entities.Storage
 ) -> None:
-    result = get_storage_page_text(storage)
     await call.message.edit_caption(
-        caption=result, reply_markup=kb.storage_markup
+        caption=msg.get_storage_page_text(storage),
+        reply_markup=kb.storage_markup,
     )
 
 
 @router.callback_query(F.data == FactoryCB.upgrade_storage)
-@get_factory
 async def upgrade_storage(
     call: types.CallbackQuery,
-    user: entities.User,
-    factory: entities.Factory,
     cmd_executor: CommandExecutor,
 ) -> Any:
     result = await cmd_executor.execute(
-        UpgradeStorageCommand(
-            factory_id=factory.id,
-            storage=factory.storage,
-            user_money=user.money,
-            user_id=user.id,
-        )
+        UpgradeStorageCommand(user_id=call.from_user.id)
     )
     if isinstance(result, results.Failure):
         return await call.answer(result.reason, show_alert=True)
     await open_storage(call)
-
-
-def get_storage_page_text(storage: entities.Storage) -> str:
-    result = msg.storage_title
-    for product, amount in storage.products.items():
-        result += msg.storage_products.format(product.name, amount)
-    result += msg.storage_footer.format(storage.max_stock)
-    return result

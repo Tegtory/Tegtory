@@ -2,12 +2,11 @@ from typing import Any
 
 from tegtory.domain.interfaces import EventBus
 from tegtory.domain.use_cases.base import EventBased
+from tegtory.infrastructure.di import container
 from tegtory.infrastructure.utils import get_children
 
 
 async def subscribe_events() -> None:
-    from ..di import container
-
     event_bus = await container.get(EventBus)
     events = get_subscribed_events(EventBased)
 
